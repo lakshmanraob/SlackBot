@@ -3,10 +3,10 @@ from flask import request, Response, make_response
 import json
 from slackclient import SlackClient
 
-
 SLACK_BOT_TOKEN = 'xoxb-171288352757-ZHEdu1wAG9xpebMiDlbIbqwh'
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
+
 
 @app.route('/')
 @app.route('/index')
@@ -51,12 +51,20 @@ def message_actions():
     form_json = json.loads(request.form["payload"])
 
     # Check to see what the user's selection was and update the message
-    selection = form_json["actions"][0]["selected_options"][0]["value"]
+    # selection = form_json["actions"][0]["selected_options"][0]["value"]
 
-    if selection == "war":
-        message_text = "The only winning move is not to play.\nHow about a nice game of chess?"
+    selection = form_json["actions"][0]["value"]
+
+    if selection == "yes":
+        message_text = form_json["user"]["name"] + "said " + selection + "for " + \
+                       form_json["original_message"]["attachments"][0]["text"]
     else:
-        message_text = ":horse:"
+        message_text = "NO questiion to display"
+
+    # if selection == "war":
+    #     message_text = "The only winning move is not to play.\nHow about a nice game of chess?"
+    # else:
+    #     message_text = ":horse:"
 
     response = slack_client.api_call(
         "chat.update",
