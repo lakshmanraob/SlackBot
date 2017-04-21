@@ -56,7 +56,7 @@ def message_actions():
     selection = form_json["actions"][0]["value"]
 
     if selection == "yes":
-        message_text = form_json["user"]["name"] + "said " + selection + "for " + \
+        message_text = "@"+form_json["user"]["name"] + " responded " + selection + " for " + \
                        form_json["original_message"]["attachments"][0]["text"]
     else:
         message_text = "NO questiion to display"
